@@ -227,6 +227,11 @@ def load_supported(args):
     for fn in os.listdir():
         if fn.startswith("support-") and fn.endswith(".sh"):
             img = SupportImage(args.os, fn)
+
+            if 'labs.mlnx' in img.spec['git_url']: # no mlnx access
+                logging.warn('SupportImage(name={}) is not supported'.format(img.name))
+                continue
+                
             supported[img.name] = img
     imgs = [img for _, img in sorted(supported.items())]
     for I in list(supported.values()):
