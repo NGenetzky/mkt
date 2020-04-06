@@ -2,6 +2,7 @@
 """
 import os
 import utils
+import logging
 from utils.git import *
 from utils.docker import *
 from utils.cmdline import *
@@ -122,6 +123,13 @@ class SupportImage(object):
             cache_fn = os.path.join(SupportImage.cdir, cache_fn)
             self.nfs_paths[nfs_fn] = cache_fn
             if os.path.exists(cache_fn):
+                continue
+
+            if True: # no mlnx access
+                logging.warn('SupportImage(name={})._fetch_nfs(); skipping {}'.format(
+                    self.name,
+                    ' '.join(["sftp", "gen-l-vrt-197.mtl.labs.mlnx:%s" % (nfs_fn), tmp_fn])
+                ))
                 continue
 
             # FIXME: This just uses Jason's lab server for lack of something better..
